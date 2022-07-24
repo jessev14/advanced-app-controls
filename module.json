@@ -1,0 +1,19 @@
+{
+    "name": "advanced-app-controls",
+    "title": "Advanced App Controls",
+    "description": "",
+    "author": "enso#0361",
+    "version": "1.0.0",
+    "minimumCoreVersion": "9",
+    "compatibleCoreVersion": "9",
+    "esmodules": [
+        "./scripts/main.js"
+    ],
+    "styles": [
+    ],
+    "languages": [
+    ],
+    "url": "",
+    "manifest": "",
+    "download": ""
+}
