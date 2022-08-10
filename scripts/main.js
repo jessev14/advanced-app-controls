@@ -1,35 +1,36 @@
-const moduleName = "advanced-app-controls";
+const moduleName = 'advanced-app-controls';
 
 
-Hooks.once("init", () => {
-    game.settings.register(moduleName, "invertScrollDirection", {
-        name: "Invert Scroll Direction",
-        scope: "client",
+Hooks.once('init', () => {
+    game.settings.register(moduleName, 'invertScrollDirection', {
+        name: 'Invert Scroll Direction',
+        scope: 'client',
         config: true,
         type: Boolean,
         default: false
     });
 
-    game.settings.register(moduleName, "closeActiveWindow", {
-        name: "Esc Closes Active Window Only",
-        scope: "client",
+    game.settings.register(moduleName, 'closeActiveWindow', {
+        name: 'Esc Closes Active Window Only',
+        scope: 'client',
         config: true,
         type: Boolean,
         default: false
     });
 
-    game.keybindings.register(moduleName, "closeActiveWindow", {
-        name: "Close Active Window",
+    game.keybindings.register(moduleName, 'closeActiveWindow', {
+        name: 'Close Active Window',
+        hint: 'Enable in Module Settings. Hold Shift to close all windows.',
         uneditable: [
             {
-                key: "Escape"
+                key: 'Escape'
             }
         ],
         onDown: context => {
-            if (!game.settings.get(moduleName, "closeActiveWindow")) return;
+            if (!game.settings.get(moduleName, 'closeActiveWindow')) return;
 
             // Save fog of war if there are pending changes
-            if (canvas.ready) canvas.sight.commitFog();
+            if (canvas.ready) canvas.fog.commit();
 
             if (context.isShift) {
                 Object.values(ui.windows).forEach(app => app.close());
@@ -54,64 +55,35 @@ Hooks.once("init", () => {
                 return true;
             }
         },
-        reservedModifiers: ["Shift"]
+        reservedModifiers: ['Shift']
     });
-
-    game.keybindings.register(moduleName, "switchWindow", {
-        name: "Switch to Next Window",
-        editable: [
-            {
-                key: "Tab",
-                modifiers: ["Control"]
-            }
-        ],
-        onDown: context => {
-            const windows = Object.values(ui.windows).sort((a, b) => a.position.zIndex - b.position.zIndex);
-            const topWindow = windows[windows.length - 1];
-            let _maxZ = topWindow.position.zIndex;
-
-            if (!context.isShift) {    
-                for (const window of windows.slice(0, windows.length - 1)) {
-                    ++_maxZ;
-                    window.position.zIndex = _maxZ;
-                    window.element[0].style.zIndex = window.position.zIndex;
-                }
-            } else {
-                const bottomWindow = windows[0];
-                ++_maxZ;
-                bottomWindow.position.zIndex = _maxZ;
-                bottomWindow.element[0].style.zIndex = _maxZ;
-            }
-        },
-        reservedModifiers: ["Shift"]
-    });
-
 });
 
-Hooks.once("ready", () => {
-    document.addEventListener("auxclick", ev => {
+Hooks.once('ready', () => {
+    document.addEventListener('auxclick', ev => {
+        console.log(ev)
         if (ev.button !== 1) return;
 
         const { target } = ev;
-        if (!target.classList.contains("window-title")) return;
+        if (!target.classList.contains('window-title')) return;
 
         ui.activeWindow.close();
     });
 });
 
 
-Hooks.on("renderApplication", implementScrollTab);
-Hooks.on("renderActorSheet", implementScrollTab);
-Hooks.on("renderItemSheet", implementScrollTab);
-Hooks.on("renderSidebarTab", implementScrollTab);
+Hooks.on('renderApplication', implementScrollTab);
+Hooks.on('renderActorSheet', implementScrollTab);
+Hooks.on('renderItemSheet', implementScrollTab);
+Hooks.on('renderSidebarTab', implementScrollTab);
 
 
 function implementScrollTab(app, html, data) {
     const tabSelectors = html[0].querySelectorAll(`nav.tabs`);
     tabSelectors.forEach(n => {
-        n.addEventListener("wheel", ev => {
+        n.addEventListener('wheel', ev => {
             let { wheelDelta } = ev;
-            if (game.settings.get(moduleName, "invertScrollDirection")) wheelDelta *= -1;
+            if (game.settings.get(moduleName, 'invertScrollDirection')) wheelDelta *= -1;
             const direction = wheelDelta < 0;
             const currentTab = n.querySelector(`a.active`);
             let targetTab;
