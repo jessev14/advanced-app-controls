@@ -61,7 +61,6 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
     document.addEventListener('auxclick', ev => {
-        console.log(ev)
         if (ev.button !== 1) return;
 
         const { target } = ev;
