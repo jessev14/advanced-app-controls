@@ -2,7 +2,10 @@
     "id": "advanced-app-controls",
     "title": "Advanced App Controls",
     "description": "",
-    "author": "enso#0361",
+    "authors": [{
+        "name": "enso",
+        "discord": "enso#0361"
+    }],
     "version": "1.0.0",
     "compatiblility": {
         "minimum": "10",
