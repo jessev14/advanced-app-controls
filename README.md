@@ -13,3 +13,4 @@ Advanced App Controls adds the following app-control related features:
 
 - Scroll while hovering over tabs to cycle through tabs. Scroll direction can be inverted in module settings.
 - Esc only closes the top-most application. Shift can be held in addition to close all applications. This features must be enabled in the module settings first.
+- Middle clicking appication headers will close the application.
