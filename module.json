@@ -18,6 +18,11 @@
     ],
     "languages": [
     ],
+    "flags": {
+        "fvttdevleague": {
+            "pacakge-jam": 2022
+        }
+    },
     "url": "",
     "manifest": "",
     "download": ""
